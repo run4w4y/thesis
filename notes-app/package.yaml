@@ -1,0 +1,111 @@
+name:                notes-app
+version:             0.1.0.0
+
+extra-source-files:
+- README.md
+
+default-extensions:
+- OverloadedStrings
+- ScopedTypeVariables
+- FlexibleContexts
+- FlexibleInstances
+- MultiParamTypeClasses
+- RecordWildCards
+- NamedFieldPuns
+- DeriveGeneric
+- DuplicateRecordFields
+- TypeOperators
+- DataKinds
+- DeriveAnyClass
+- TypeFamilies
+- StandaloneDeriving
+- ConstraintKinds
+
+dependencies:
+- base >= 4.7 && < 5
+- aeson
+- attoparsec
+- base >=4.7 && <5
+- bytestring
+- beam-core
+- beam-migrate
+- beam-postgres
+- data-default
+- fast-logger
+- http-api-data
+- jose
+- lens
+- mtl
+- natural-transformation
+- optional-args
+- postgresql-simple
+- protolude
+- resource-pool
+- regex-compat
+- servant
+- servant-server
+- servant-auth
+- servant-auth-server
+- servant-swagger
+- servant-swagger-ui
+- servant-auth-swagger
+- scrypt
+- swagger2
+- text
+- time
+- transformers
+- uuid
+- unordered-containers
+- wai
+- wai-cors
+- wai-extra
+- warp
+- word8
+- monad-logger
+- ansi-terminal
+- transformers-base
+- monad-control
+- either
+- lifted-base
+- servant-util
+- servant-util-beam-pg
+- optparse-applicative
+- conduit
+- case-insensitive
+- containers
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Widentities
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wmissing-export-lists
+- -Wmissing-home-modules
+- -Wpartial-fields
+- -Wredundant-constraints
+
+library:
+  source-dirs: src
+
+executables:
+  notes-app-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - notes-app
+
+tests:
+  notes-app-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - notes-app
