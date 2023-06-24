@@ -11,8 +11,8 @@ import           Data.Text                            (Text)
 import           Database.Beam                        (Table (primaryKey))
 import           Database.Beam.Postgres               (Postgres)
 import           Database.Beam.Postgres.Conduit       (runDelete,
-                                                       runInsertReturning,
-                                                       runSelect)
+                                                       streamingRunInsertReturning,
+                                                       streamingRunSelect)
 import           Database.Beam.Postgres.Full          (PgInsertReturning,
                                                        insertReturning,
                                                        onConflictDefault)
@@ -22,9 +22,10 @@ import           Database.Beam.Query                  (Q, QExpr, all_, default_,
                                                        select, val_, (==.))
 import           GHC.Int                              (Int32)
 import           NotesApp.Conduit.Database            (ConduitDb (..),
-                                                       conduitDb, rowList,
-                                                       singleRow)
-import           NotesApp.Conduit.Monad               (MonadCRUD, MonadCRUD')
+                                                       conduitDb, maybeRow,
+                                                       rowList)
+import           NotesApp.Conduit.Database.Monad      (MonadCRUD, MonadCRUD',
+                                                       runCRUD, runCRUD')
 import qualified NotesApp.Conduit.Notes.Database.Note as Persisted
 
 type NoteRow s = Persisted.NoteT (QExpr Postgres s)
@@ -32,7 +33,10 @@ type NoteRow s = Persisted.NoteT (QExpr Postgres s)
 readAll :: MonadCRUD' m => m [Persisted.Note]
 readAll = do
   conn <- ask
-  runSelect conn (select (all_ (conduitNotes conduitDb))) rowList
+  runCRUD'
+    $ rowList
+    $ streamingRunSelect conn
+    $ select (all_ (conduitNotes conduitDb))
 
 insertNote :: Text -> Text -> PgInsertReturning Persisted.Note
 insertNote title content
@@ -52,17 +56,18 @@ insertNote title content
 create :: MonadCRUD m => Text -> Text -> m Persisted.Note
 create title content = do
   conn <- ask
-  inserted <-
-    runInsertReturning
-      conn
-      (insertNote title content)
-      singleRow
-  readOne (Persisted.id inserted)
+  runCRUD 
+    $ maybeRow 
+    $ streamingRunInsertReturning conn 
+    $ insertNote title content
 
 readOne :: MonadCRUD m => Int32 -> m Persisted.Note
 readOne noteId = do
   conn <- ask
-  runSelect conn (select (selectNote noteId)) singleRow
+  runCRUD 
+    $ maybeRow 
+    $ streamingRunSelect conn 
+    $ select (selectNote noteId)
 
 -- NOTE: maybe i couldve just used Database.Beam.Query.lookup_ here
 selectNote :: Int32 -> Q Postgres ConduitDb s (NoteRow s)

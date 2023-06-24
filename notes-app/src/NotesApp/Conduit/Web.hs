@@ -1,6 +1,5 @@
 module NotesApp.Conduit.Web
   ( app
-  , context
   ) where
 
 import Network.Wai (Application)
@@ -11,12 +10,11 @@ import NotesApp.Conduit.Web.Swagger (NotesAppConduitSwagger)
 import qualified NotesApp.Conduit.Web.Swagger as Swagger
 import Servant
   ( (:<|>)((:<|>))
-  , Context((:.), EmptyContext)
+  , Context(EmptyContext)
   , Server
   , serveWithContext
   , Proxy (Proxy)
   )
-import Servant.Auth.Server (CookieSettings, defaultCookieSettings)
 
 type NotesAppConduit =
   NotesAppConduitSwagger :<|>
@@ -30,9 +28,5 @@ server handle =
 notesAppConduit :: Proxy NotesAppConduit
 notesAppConduit = Proxy
 
-context :: Context '[CookieSettings]
-context  =
-  defaultCookieSettings :. EmptyContext
-
 app :: Environment -> Application
-app handle = serveWithContext notesAppConduit context (server handle)
+app handle = serveWithContext notesAppConduit EmptyContext (server handle)

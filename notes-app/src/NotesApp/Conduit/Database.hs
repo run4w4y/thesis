@@ -5,11 +5,9 @@ module NotesApp.Conduit.Database
   , maybeRow
   , openConduitDb
   , rowList
-  , singleRow
   ) where
 
 import           Control.Exception                    (Exception)
-import           Control.Monad.Error.Class            (MonadError, throwError)
 import           Control.Monad.IO.Class               (MonadIO, liftIO)
 import           Data.ByteString.Char8                (ByteString)
 import           Data.Conduit                         (ConduitT, (.|))
@@ -44,9 +42,6 @@ openConduitDb = liftIO . connectPostgreSQL
 
 maybeRow :: Monad m => ConduitT () a m () -> m (Maybe a)
 maybeRow c = Conduit.runConduit (c .| Conduit.await)
-
-singleRow :: MonadError QueryError m => ConduitT () a m () -> m a
-singleRow c = maybe (throwError (UnexpectedAmountOfRows 0)) pure =<< maybeRow c
 
 rowList :: Monad m => ConduitT () a m () -> m [a]
 rowList c = Conduit.runConduit (c .| Conduit.consume)

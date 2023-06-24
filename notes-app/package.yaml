@@ -25,7 +25,6 @@ dependencies:
 - base >= 4.7 && < 5
 - aeson
 - attoparsec
-- base >=4.7 && <5
 - bytestring
 - beam-core
 - beam-migrate
@@ -33,23 +32,17 @@ dependencies:
 - data-default
 - fast-logger
 - http-api-data
-- jose
 - lens
 - mtl
 - natural-transformation
 - optional-args
 - postgresql-simple
-- protolude
 - resource-pool
 - regex-compat
 - servant
 - servant-server
-- servant-auth
-- servant-auth-server
 - servant-swagger
 - servant-swagger-ui
-- servant-auth-swagger
-- scrypt
 - swagger2
 - text
 - time
@@ -67,12 +60,11 @@ dependencies:
 - monad-control
 - either
 - lifted-base
-- servant-util
-- servant-util-beam-pg
 - optparse-applicative
 - conduit
 - case-insensitive
 - containers
+- unliftio
 
 ghc-options:
 - -Wall

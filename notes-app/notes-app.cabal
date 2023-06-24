@@ -13,8 +13,8 @@ extra-source-files:
 library
   exposed-modules:
       NotesApp.Conduit.Database
+      NotesApp.Conduit.Database.Monad
       NotesApp.Conduit.Environment
-      NotesApp.Conduit.Monad
       NotesApp.Conduit.Notes.Database
       NotesApp.Conduit.Notes.Database.Note
       NotesApp.Conduit.Notes.Schema
@@ -63,7 +63,6 @@ library
     , either
     , fast-logger
     , http-api-data
-    , jose
     , lens
     , lifted-base
     , monad-control
@@ -73,24 +72,18 @@ library
     , optional-args
     , optparse-applicative
     , postgresql-simple
-    , protolude
     , regex-compat
     , resource-pool
-    , scrypt
     , servant
-    , servant-auth
-    , servant-auth-server
-    , servant-auth-swagger
     , servant-server
     , servant-swagger
     , servant-swagger-ui
-    , servant-util
-    , servant-util-beam-pg
     , swagger2
     , text
     , time
     , transformers
     , transformers-base
+    , unliftio
     , unordered-containers
     , uuid
     , wai
@@ -139,7 +132,6 @@ executable notes-app-exe
     , either
     , fast-logger
     , http-api-data
-    , jose
     , lens
     , lifted-base
     , monad-control
@@ -150,24 +142,18 @@ executable notes-app-exe
     , optional-args
     , optparse-applicative
     , postgresql-simple
-    , protolude
     , regex-compat
     , resource-pool
-    , scrypt
     , servant
-    , servant-auth
-    , servant-auth-server
-    , servant-auth-swagger
     , servant-server
     , servant-swagger
     , servant-swagger-ui
-    , servant-util
-    , servant-util-beam-pg
     , swagger2
     , text
     , time
     , transformers
     , transformers-base
+    , unliftio
     , unordered-containers
     , uuid
     , wai
@@ -217,7 +203,6 @@ test-suite notes-app-test
     , either
     , fast-logger
     , http-api-data
-    , jose
     , lens
     , lifted-base
     , monad-control
@@ -228,24 +213,18 @@ test-suite notes-app-test
     , optional-args
     , optparse-applicative
     , postgresql-simple
-    , protolude
     , regex-compat
     , resource-pool
-    , scrypt
     , servant
-    , servant-auth
-    , servant-auth-server
-    , servant-auth-swagger
     , servant-server
     , servant-swagger
     , servant-swagger-ui
-    , servant-util
-    , servant-util-beam-pg
     , swagger2
     , text
     , time
     , transformers
     , transformers-base
+    , unliftio
     , unordered-containers
     , uuid
     , wai
